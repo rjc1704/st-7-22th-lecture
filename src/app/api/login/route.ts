@@ -1,9 +1,9 @@
-import { LoginStateType, SignUpStateType } from "@/types/auth.type";
+import { FormState } from "@/types/auth.type";
 import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
   const supabase = createClient();
-  const { email, pw } = (await request.json()) as LoginStateType;
+  const { email, pw } = (await request.json()) as Omit<FormState, "nickname">;
   let { data, error } = await supabase.auth.signInWithPassword({
     email,
     password: pw,

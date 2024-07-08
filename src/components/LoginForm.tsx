@@ -1,16 +1,12 @@
 "use client";
 
 import { useLoginContext } from "@/context/LoginProvider";
-import { LoginStateType, SignUpStateType } from "@/types/auth.type";
+import { FormState } from "@/types/auth.type";
 import { useRouter } from "next/navigation";
 import { type ChangeEventHandler, useState, FormEventHandler } from "react";
 
-function isSignUpMode(
-  formState: LoginStateType | SignUpStateType,
-): formState is SignUpStateType {
-  return "nickname" in formState;
-}
 export default function LoginForm() {
+  console.log("LoginForm 실행");
   const router = useRouter();
   const { login } = useLoginContext();
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
@@ -19,9 +15,7 @@ export default function LoginForm() {
     pw: "",
     nickname: "",
   };
-  const [formState, setFormState] = useState<LoginStateType | SignUpStateType>(
-    initialState,
-  );
+  const [formState, setFormState] = useState<FormState>(initialState);
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
@@ -34,7 +28,7 @@ export default function LoginForm() {
       if (!formState.email || !formState.pw) {
         return alert("이메일과 비밀번호 모두 입력해 주세요.");
       }
-      const { nickname, ...loginState } = formState as SignUpStateType;
+      const { nickname, ...loginState } = formState;
       // 로그인 요청
       const data = await fetch("/api/login", {
         method: "POST",
@@ -54,27 +48,26 @@ export default function LoginForm() {
       router.replace("/");
       return;
     }
-    if (isSignUpMode(formState)) {
-      // 회원가입 요청
-      if (!formState.email || !formState.pw || !formState.nickname) {
-        return alert("이메일, 비밀번호, 닉네임 모두 입력해 주세요.");
-      }
-      const data = await fetch("/api/signUp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formState),
-      }).then((res) => res.json());
-      if (data.errorMsg) {
-        alert(data.errorMsg);
-        return;
-      }
 
-      alert("회원가입 성공");
-      setFormState(initialState);
-      setIsLoginMode(false);
+    // 회원가입 요청
+    if (!formState.email || !formState.pw || !formState.nickname) {
+      return alert("이메일, 비밀번호, 닉네임 모두 입력해 주세요.");
     }
+    const data = await fetch("/api/signUp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formState),
+    }).then((res) => res.json());
+    if (data.errorMsg) {
+      alert(data.errorMsg);
+      return;
+    }
+
+    alert("회원가입 성공");
+    setFormState(initialState);
+    setIsLoginMode(false);
   };
   return (
     <div>
@@ -102,7 +95,7 @@ export default function LoginForm() {
             onChange={handleInputChange}
           />
         </section>
-        {!isLoginMode && isSignUpMode(formState) && (
+        {!isLoginMode && (
           <section>
             <label htmlFor="nickname">nickname: </label>
             <input

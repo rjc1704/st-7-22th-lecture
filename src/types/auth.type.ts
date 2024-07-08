@@ -1,6 +1,5 @@
-export type SignUpStateType = {
+export type FormState = {
   email: string;
   pw: string;
   nickname: string;
 };
-export type LoginStateType = Omit<SignUpStateType, "nickname">;
