@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default async function Home() {
   const pokemons: Pokemon[] = await getPokemons();
-  console.log("pokemons:", pokemons);
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-6 text-red-600">

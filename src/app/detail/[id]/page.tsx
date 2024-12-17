@@ -1,6 +1,10 @@
+import { getPokemonData } from "@/api/getPokemon";
 import BackButton from "@/components/BackButton";
-import { Pokemon } from "@/types/pokemon.type";
 import Image from "next/image";
+
+export function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
 
 export default async function PokemonDetail({
   params: { id },
@@ -8,10 +12,7 @@ export default async function PokemonDetail({
   params: { id: string };
 }) {
   console.log(id, " 포켓몬디테일 페이지렌더링");
-  const defaultURL = "http://localhost:3000";
-  const pokemonData: Pokemon = await fetch(`${defaultURL}/api/pokemons/${id}`, {
-    cache: "no-store",
-  }).then((res) => res.json());
+  const pokemonData = await getPokemonData(id);
 
   return (
     <div className="container">
