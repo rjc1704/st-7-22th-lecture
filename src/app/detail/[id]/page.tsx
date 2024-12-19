@@ -2,10 +2,6 @@ import { getPokemonData } from "@/api/getPokemon";
 import BackButton from "@/components/BackButton";
 import Image from "next/image";
 
-export function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }, { id: "3" }];
-}
-
 export default async function PokemonDetail({
   params: { id },
 }: {

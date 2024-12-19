@@ -13,17 +13,18 @@ export default function PokemonList() {
     error,
   } = useQuery<Pokemon[], Error, Pokemon[], [string]>({
     queryKey: ["pokemons"],
-    queryFn: getPokemons,
+    queryFn: () => getPokemons(),
+    // throwOnError: true,
   });
   console.log("isPending:", isPending);
 
   if (isPending) return <p className="text-2xl">isPending...</p>;
 
-  if (error) return <p></p>;
+  if (error) return <p>PokemonList에서 에러 발생</p>;
 
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {pokemonList.map((pokemon) => (
+      {pokemonList!.map((pokemon) => (
         <li
           key={pokemon.id}
           className="bg-white border rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"

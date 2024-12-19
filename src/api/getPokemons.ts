@@ -1,3 +1,4 @@
+"use server";
 import { Pokemon } from "@/types/pokemon.type";
 import axios from "axios";
 

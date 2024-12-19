@@ -4,6 +4,7 @@
 // Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
 import {
   isServer,
+  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
@@ -11,11 +12,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function makeQueryClient() {
   return new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error, query) => {
+        alert(`Error Occured in ${query.queryKey}: ${error.message}`);
+      },
+    }),
     defaultOptions: {
       queries: {
-        // With SSR, we usually want to set some default staleTime
-        // above 0 to avoid refetching immediately on the client
         staleTime: 60 * 1000,
+        retry: 0,
       },
     },
   });
