@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Todo } from "@/types/todo.type";
 import TodoItem from "./TodoItem";
+import { getTodos } from "@/api/todo";
 
 export default function TodoList() {
   const {
@@ -13,12 +14,8 @@ export default function TodoList() {
   } = useQuery<Todo[], Error, Todo[], [string]>({
     queryKey: ["todos"],
     queryFn: async () => {
-      const { data: todos } = (await fetch(`/api/todos`).then((res) =>
-        res.json(),
-      )) as {
-        data: Todo[];
-      };
-      return todos;
+      const todos = await getTodos();
+      return todos as Todo[];
     },
   });
 
