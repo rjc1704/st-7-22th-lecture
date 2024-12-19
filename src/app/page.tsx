@@ -11,9 +11,9 @@ export default async function Home() {
         <Suspense fallback={<div>6개 로딩중...</div>}>
           <PokemonList count={6} />
         </Suspense>
-        {/* <Suspense fallback={<div>200개 로딩중...</div>}>
+        <Suspense fallback={<div>200개 로딩중...</div>}>
           <PokemonList count={200} />
-        </Suspense> */}
+        </Suspense>
       </div>
     </div>
   );
