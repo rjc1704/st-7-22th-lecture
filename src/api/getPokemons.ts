@@ -2,8 +2,8 @@
 import { Pokemon } from "@/types/pokemon.type";
 import axios from "axios";
 
-export const getPokemons = async (): Promise<Pokemon[]> => {
-  const allPokemonPromises = Array.from({ length: 6 }, (_, index) => {
+export const getPokemons = async (count: number): Promise<Pokemon[]> => {
+  const allPokemonPromises = Array.from({ length: count }, (_, index) => {
     const id = index + 1;
     return Promise.all([
       axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`),
