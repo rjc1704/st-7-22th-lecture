@@ -106,7 +106,7 @@ export default function LoginForm() {
             />
           </section>
         )}
-        <button className="bg-slate-500 rounded-md p-1">
+        <button type="submit" className="bg-slate-500 rounded-md p-1">
           {isLoginMode ? "로그인" : "회원가입"}
         </button>
         <button
